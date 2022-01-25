@@ -8,6 +8,7 @@ CPPFLAGS   =
 LIBS       =-lutil
 CFLAGS_ALL =$(LDFLAGS) $(CFLAGS) $(CPPFLAGS) -DSSNIP_TEMPLATE_DIR='"$(PREFIX)/share/ssnip"'
 PROGRAMS   =./ssnip
+MAN1       =./ssnip.1
 
 ## Help string.
 all:
@@ -25,5 +26,7 @@ all: $(PROGRAMS)
 install: $(PROGRAMS)
 	install -d                $(DESTDIR)$(PREFIX)/bin
 	install -m755 $(PROGRAMS) $(DESTDIR)$(PREFIX)/bin
+	install -d                $(DESTDIR)$(PREFIX)/share/man/man1
+	install -m644 $(MAN1)     $(DESTDIR)$(PREFIX)/share/man/man1
 clean:
 	rm -f $(PROGRAMS)
