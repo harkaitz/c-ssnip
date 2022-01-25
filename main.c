@@ -10,6 +10,10 @@
 #ifndef SSNIP_TEMPLATE_DIR
 #  define SSNIP_TEMPLATE_DIR "templates"
 #endif
+#define COPYRIGHT_LINE \
+    "Donate bitcoin: 1C1ZzDje7vHhF23mxqfcACE8QD4nqxywiV" "\n" \
+    "Copyright (c) 2022 Harkaitz Agirre, harkaitz.aguirre@gmail.com" "\n" \
+    ""
 
 int main (int _argc, char *_argv[]) {
 
@@ -27,7 +31,9 @@ int main (int _argc, char *_argv[]) {
     
     /* Print help. */
     if (argc == 1 || !strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
-        printf("Usage: %s [-lpsiq] [FILES...]\n", progname);
+        printf("Usage: %s [-lpsiq] [FILES...]" "\n"
+               ""                              "\n"
+               COPYRIGHT_LINE, progname);
         return 0;
     }
 
