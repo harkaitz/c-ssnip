@@ -176,22 +176,22 @@ bool ssnip_tmpl_load(ssnip_tmpl *_t) {
 
         /* Set variables. */
         if (!strcasecmp(s1, "open_regex")) {
-            rerr = regcomp(&_t->open_regex, s2, 0);
+            rerr = regcomp(&_t->open_regex, s2, REG_ICASE);
             if (rerr/*err*/) { goto cleanup_regex; }
             _t->open_regex_m = strdup(s2);
             if (!_t->open_regex_m/*err*/) { goto cleanup_errno; }
         } else if (!strcasecmp(s1, "quit_regex")) {
-            rerr = regcomp(&_t->quit_regex, s2, 0);
+            rerr = regcomp(&_t->quit_regex, s2, REG_ICASE);
             if (rerr/*err*/) { goto cleanup_regex; }
             _t->quit_regex_m = strdup(s2);
             if (!_t->quit_regex_m/*err*/) { goto cleanup_errno; }
         } else if (!strcasecmp(s1, "inside_regex")) {
-            rerr = regcomp(&_t->inside_regex, s2, 0);
+            rerr = regcomp(&_t->inside_regex, s2, REG_ICASE);
             if (rerr/*err*/) { goto cleanup_regex; }
             _t->inside_regex_m = strdup(s2);
             if (!_t->inside_regex_m/*err*/) { goto cleanup_errno; }
         } else if (!strcasecmp(s1, "filename_regex")) {
-            rerr = regcomp(&_t->filename_regex, s2, 0);
+            rerr = regcomp(&_t->filename_regex, s2, REG_ICASE);
             if (rerr/*err*/) { goto cleanup_regex; }
             _t->filename_regex_m = strdup(s2);
             if (!_t->filename_regex_m/*err*/) { goto cleanup_errno; }
@@ -384,7 +384,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
         l_is_close = false;
         l_is_open  = false;
         l_number++;
-        
+
         /* Search open. */
         if (!ot) {
             FOREACH(ssnip_tmpl,t,_s->t) {
@@ -398,7 +398,6 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
         if (l_is_open && !_s->quiet) {
             syslog(LOG_INFO, "%s: %3i: %s: open", i_filename, l_number, ot->name_s);
         }
-        
         
         /* Search close. */
         if (ot && !l_is_open) {
@@ -435,6 +434,21 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
             /* Restore buffer. */
             fseek(buf_fp, 0, SEEK_SET);
             ot = NULL;
+            /* Check whether there is another open. */
+            l_is_open  = false;
+            FOREACH(ssnip_tmpl,t,_s->t) {
+                if (ssnip_tmpl_match_open(t, l)) {
+                    ot = t;
+                    l_is_open = true;
+                    break;
+                }
+            }
+            if (l_is_open && !_s->quiet) {
+                syslog(LOG_INFO, "%s: %3i: %s: open", i_filename, l_number, ot->name_s);
+            }
+            if (ot) {
+                fputs(l, buf_fp);
+            }
         }
         /* Write. */
         if (!ot) {
