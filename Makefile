@@ -21,15 +21,19 @@ clean:
 
 
 ## -- manpages --
+ifneq ($(PREFIX),)
 MAN_1=./ssnip.1 
 install: install-man1
 install-man1: $(MAN_1)
 	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
 	cp $(MAN_1) $(DESTDIR)$(PREFIX)/share/man/man1
+endif
 ## -- manpages --
 ## -- license --
+ifneq ($(PREFIX),)
 install: install-license
 install-license: LICENSE
 	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
 	cp LICENSE $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
+endif
 ## -- license --
