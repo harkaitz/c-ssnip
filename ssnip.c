@@ -557,7 +557,7 @@ bool diff_files(bool *_same_content, FILE *_o_fp, const char _f1[], const char _
     syslog(LOG_ERR, "diff: Returned error code %i.", status);
     goto cleanup;
 }
-bool pager_print(size_t _bsz, const char _b[_bsz]) {
+bool pager_print(size_t _bsz, const char _b[]) {
     bool  retval = false;
     pid_t pid    = -1;
     int   p[2]   = {-1,-1};
