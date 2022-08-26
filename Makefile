@@ -33,7 +33,8 @@ endif
 ifneq ($(PREFIX),)
 install: install-license
 install-license: LICENSE
-	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
-	cp LICENSE $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
+	@echo 'I share/doc/c-ssnip/LICENSE'
+	@mkdir -p $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
+	@cp LICENSE $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
 endif
 ## -- license --
