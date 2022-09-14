@@ -1,7 +1,9 @@
+#define _POSIX_C_SOURCE 201000L
 #include "ssnip.h"
 #include <syslog.h>
 #include <string.h>
 #include <errno.h>
+#include <strings.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -12,6 +14,8 @@
 #define VALID_FD(N) ((N)!=-1)
 
 __attribute__((weak)) const char *g_env_prog = "/usr/bin/env";
+
+#define verbose(FMT,...) ({})
 
 bool ssnip_create(ssnip **_s, const char *_t_dir) {
 
@@ -375,7 +379,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
         }
     }
     if (ot && !_s->quiet) {
-        syslog(LOG_INFO, "%s: sof: %s: open", i_filename, ot->name_s);
+        verbose("%s: sof: %s: open", i_filename, ot->name_s);
     }
     
     /* Read lines. */
@@ -396,7 +400,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
             }
         }
         if (l_is_open && !_s->quiet) {
-            syslog(LOG_INFO, "%s: %3i: %s: open", i_filename, l_number, ot->name_s);
+            verbose("%s: %3i: %s: open", i_filename, l_number, ot->name_s);
         }
         
         /* Search close. */
@@ -409,7 +413,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
             }
         }
         if (l_is_close && !_s->quiet) {
-            syslog(LOG_INFO, "%s: %3i: %s: close", i_filename, l_number-1, ot->name_s);
+            verbose("%s: %3i: %s: close", i_filename, l_number-1, ot->name_s);
         }
         
         /* Store line if not a close. */
@@ -444,7 +448,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
                 }
             }
             if (l_is_open && !_s->quiet) {
-                syslog(LOG_INFO, "%s: %3i: %s: open", i_filename, l_number, ot->name_s);
+                verbose("%s: %3i: %s: open", i_filename, l_number, ot->name_s);
             }
             if (ot) {
                 fputs(l, buf_fp);
@@ -469,7 +473,7 @@ bool ssnip_process_fp(ssnip *_s, const char _i_filename[], FILE *_i_fp, int _o_f
             count++;
         }
         if (!_s->quiet) {
-            syslog(LOG_INFO, "%s: eof: %s: close", i_filename, ot->name_s);
+            verbose("%s: eof: %s: close", i_filename, ot->name_s);
         }
     }
     /* Successfull. */
@@ -656,7 +660,7 @@ bool ssnip_replace(ssnip *_s, const char _io_filename[]) {
     if (err == EOF/*err*/) goto cleanup_errno; 
     if (d_files_the_same_p || d_mem == NULL) {
         if (!_s->quiet) {
-            syslog(LOG_INFO, "%s: File didn't change.", _io_filename);
+            verbose("%s: File didn't change.", _io_filename);
         }
         retval = true;
         goto cleanup;
