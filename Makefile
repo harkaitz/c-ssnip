@@ -21,13 +21,12 @@ clean:
 
 
 ## -- manpages --
-ifneq ($(PREFIX),)
-MAN_1=./ssnip.1 
 install: install-man1
-install-man1: $(MAN_1)
-	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
-	cp $(MAN_1) $(DESTDIR)$(PREFIX)/share/man/man1
-endif
+install-man1:
+	@echo 'I share/man/man1/'
+	@mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
+	@echo 'I share/man/man1/ssnip.1'
+	@cp ./ssnip.1 $(DESTDIR)$(PREFIX)/share/man/man1
 ## -- manpages --
 ## -- license --
 ifneq ($(PREFIX),)
