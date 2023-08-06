@@ -1,3 +1,5 @@
+PROJECT    =c-ssnip
+VERSION    =1.0.0
 DESTDIR    =
 PREFIX     =/usr/local
 AR         =ar
@@ -17,15 +19,21 @@ clean:
 ## -- programs
 ./ssnip$(EXE): main.c ssnip.c ssnip.h
 	$(CC) -o $@ main.c ssnip.c $(CFLAGS_ALL) $(LIBS)
-## -- manpages --
-install: install-man1
-install-man1:
+## -- BLOCK:license --
+install: install-license
+install-license: 
+	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/$(PROJECT)
+	cp LICENSE README.md $(DESTDIR)$(PREFIX)/share/doc/$(PROJECT)
+update: update-license
+update-license:
+	ssnip README.md
+## -- BLOCK:license --
+## -- BLOCK:man --
+update: update-man
+update-man:
+	make-h-man update
+install: install-man
+install-man:
 	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
 	cp ./ssnip.1 $(DESTDIR)$(PREFIX)/share/man/man1
-## -- manpages --
-## -- license --
-install: install-license
-install-license: LICENSE
-	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
-	cp LICENSE $(DESTDIR)$(PREFIX)/share/doc/c-ssnip
-## -- license --
+## -- BLOCK:man --
