@@ -2,8 +2,8 @@
 #include "ssnip.h"
 #include <syslog.h>
 #include <string.h>
-#include <errno.h>
 #include <strings.h>
+#include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -15,7 +15,7 @@
 
 __attribute__((weak)) const char *g_env_prog = "/usr/bin/env";
 
-#define verbose(FMT,...) ({})
+#define verbose(FMT,...) fputs("", stderr)
 
 bool ssnip_create(ssnip **_s, const char *_t_dir) {
 

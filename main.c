@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 201000L
 #include "ssnip.h"
 #include <stdio.h>
 #include <string.h>
